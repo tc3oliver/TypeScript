@@ -1,6 +1,6 @@
 import fs from 'fs';
 import cheerio from 'cheerio';
-import { Analyer } from './crawler';
+import { Analyzer } from './crawler';
 
 interface Movie {
   name: string;
@@ -16,7 +16,18 @@ interface Content {
   [propName: number]: Movie[];
 }
 
-export default class MovieAnalyzer implements Analyer {
+export default class MovieAnalyzer implements Analyzer {
+  private static instance: MovieAnalyzer;
+
+  public static getInstance() {
+    if (!MovieAnalyzer.instance) {
+      MovieAnalyzer.instance = new MovieAnalyzer();
+    }
+    return MovieAnalyzer.instance;
+  }
+
+  private constructor() {}
+
   private getMovieInfo(html: string) {
     const $ = cheerio.load(html);
     const releaseInfo = $('.release_info');
