@@ -18,6 +18,6 @@ app.use(cookie_session_1.default({
     maxAge: 24 * 60 * 60 * 1000,
 }));
 app.use(router_1.router);
-app.listen(3000, function () {
+app.listen(7000, function () {
     console.log('server is runnung.');
 });
