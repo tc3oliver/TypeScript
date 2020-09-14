@@ -4,7 +4,7 @@ import { Analyzer } from './crawler';
 
 interface Movie {
   name: string;
-  movieTime: string;
+  level: string;
 }
 
 interface MovieInfo {
@@ -34,20 +34,10 @@ export default class MovieAnalyzer implements Analyzer {
     const info: Movie[] = [];
 
     releaseInfo.map((index, element) => {
-      const name = $(element)
-        .find('.release_movie_name')
-        .find('a')
-        .eq(0)
-        .text()
-        .trim();
-      const movieTime = $(element)
-        .find('.release_movie_time')
-        .eq(0)
-        .text()
-        .split('： ')[1]
-        .trim();
+      const name = $(element).find('.release_movie_name').find('a').eq(0).text().trim();
+      const level = $(element).find('.leveltext').find('span').eq(0).text().trim();
 
-      info.push({ name, movieTime });
+      info.push({ name, level });
     });
 
     return {
@@ -59,9 +49,9 @@ export default class MovieAnalyzer implements Analyzer {
   private generateJsonContent(filePath: string, movieInfo: MovieInfo) {
     let fileContent: Content = {};
 
-    if (fs.existsSync(filePath)) {
-      fileContent = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
-    }
+    // if (fs.existsSync(filePath)) {
+    //   fileContent = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+    // }
     fileContent[movieInfo.time] = movieInfo.data;
     return fileContent;
   }

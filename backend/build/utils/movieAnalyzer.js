@@ -3,7 +3,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var fs_1 = __importDefault(require("fs"));
 var cheerio_1 = __importDefault(require("cheerio"));
 var MovieAnalyzer = /** @class */ (function () {
     function MovieAnalyzer() {
@@ -19,19 +18,9 @@ var MovieAnalyzer = /** @class */ (function () {
         var releaseInfo = $('.release_info');
         var info = [];
         releaseInfo.map(function (index, element) {
-            var name = $(element)
-                .find('.release_movie_name')
-                .find('a')
-                .eq(0)
-                .text()
-                .trim();
-            var movieTime = $(element)
-                .find('.release_movie_time')
-                .eq(0)
-                .text()
-                .split('： ')[1]
-                .trim();
-            info.push({ name: name, movieTime: movieTime });
+            var name = $(element).find('.release_movie_name').find('a').eq(0).text().trim();
+            var level = $(element).find('.leveltext').find('span').eq(0).text().trim();
+            info.push({ name: name, level: level });
         });
         return {
             time: new Date().getTime(),
@@ -40,9 +29,9 @@ var MovieAnalyzer = /** @class */ (function () {
     };
     MovieAnalyzer.prototype.generateJsonContent = function (filePath, movieInfo) {
         var fileContent = {};
-        if (fs_1.default.existsSync(filePath)) {
-            fileContent = JSON.parse(fs_1.default.readFileSync(filePath, 'utf-8'));
-        }
+        // if (fs.existsSync(filePath)) {
+        //   fileContent = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+        // }
         fileContent[movieInfo.time] = movieInfo.data;
         return fileContent;
     };

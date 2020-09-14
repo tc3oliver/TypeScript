@@ -7,13 +7,13 @@ interface BodyRequest extends Request {
   body: { [key: string]: string | undefined };
 }
 
-@controller('/')
+@controller('/api')
 export class LoginController {
   static isLogin(req: BodyRequest): boolean {
     return req.session ? req.session.login : false;
   }
 
-  @get('/api/isLogin')
+  @get('/isLogin')
   isLogin(req: BodyRequest, res: Response): void {
     const isLogin = LoginController.isLogin(req);
     res.json(getResponseData(isLogin));
@@ -43,30 +43,5 @@ export class LoginController {
     res.json(getResponseData('已登出'));
   }
 
-  @get('/')
-  home(req: BodyRequest, res: Response): void {
-    const isLogin = LoginController.isLogin(req);
-    if (isLogin) {
-      res.send(`
-        <html>
-        <body>
-        <a href='/showData'>查看</a>
-        <a href='/getData'>執行爬蟲</a>
-        <a href='/logout'>登出</a>
-        </body>
-        </html>
-    `);
-    } else {
-      res.send(`
-        <html>
-        <body>
-          <form method="POST" action="/login">
-          <input type="password" name="password">
-          <button>sent</button>
-          </form>
-        </body>
-        </html>
-    `);
-    }
-  }
+  
 }
